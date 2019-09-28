@@ -17,20 +17,26 @@
     $picture = explode('.', $pic);
     $pic_ex = end($picture);
     $final_pic = $roll.'.'.$pic_ex;
-    //print_r($final_pic);
+    $is_upload = 1;
 
-    $query = "INSERT INTO `student_info`(`name`, `roll`, `class`, `city`, `contact`, `photo`)
-    VALUES ('$name', '$roll', '$class', '$city', '$contact', '$final_pic')";
-    $result = mysqli_query($conn, $query);
-    //print_r();
-    //echo $result;
-    if ($result) {
-      $success = "Data Insert Success";
-      move_uploaded_file($_FILES['picture']['tmp_name'], 'student_images/'.$final_pic);
+    if($pic_ex != "jpg" && $pic_ex != "png" && $pic_ex != "jpeg"
+      && $pic_ex != "gif" ) {
+          $file_err = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+          $is_upload = 0;
+      }
+    if ($is_upload == 1) {
+      $query = "INSERT INTO `student_info`(`name`, `roll`, `class`, `city`, `contact`, `photo`)
+      VALUES ('$name', '$roll', '$class', '$city', '$contact', '$final_pic')";
+      $result = mysqli_query($conn, $query);
+      if ($result) {
+        $success = "Data Insert Success";
+        move_uploaded_file($_FILES['picture']['tmp_name'], 'student_images/'.$final_pic);
+      }
+      else {
+        $error = "Data Not Insert";
+      }
     }
-    else {
-      $error = "Data Not Insert";
-    }
+
   }
 
 ?>
@@ -82,6 +88,13 @@
       <div class="form-group">
         <label for="picture">Picture</label>
         <input type="file" id="picture" name="picture">
+        <label class="error float-right">
+          <?php
+          if (isset($file_err)) {
+            echo $file_err;
+          }
+          ?>
+        </label>
       </div>
       <input type="submit" name="submit" value="Add Student" class="btn btn-primary">
       <div class="form-group">
