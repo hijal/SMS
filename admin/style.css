@@ -1,0 +1,18 @@
+.error{
+  color: red;
+  font-style: italic;
+}
+
+.footer{
+  background: #03A9F4;
+  text-align: center;
+  padding: 10px;
+}
+.footer p{
+  margin: 0;
+  padding: 0;
+}
+
+.content{
+  min-height: 600px;
+}
